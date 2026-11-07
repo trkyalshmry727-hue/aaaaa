@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1b1108">
+<title>كورة الصحراء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#3d8bff; --red:#ff4b45; --gold:#ffc23d; --ink:#1b1108;
+  --glass:rgba(20,12,6,.55); --line:rgba(255,255,255,.18);
+  --sl:env(safe-area-inset-left,0px); --sr:env(safe-area-inset-right,0px);
+  --sb:env(safe-area-inset-bottom,0px); --st:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+html,body{margin:0;height:100%;overflow:hidden;background:#1b1108;color:#fff;font-family:'Cairo',system-ui,sans-serif;touch-action:none;overscroll-behavior:none}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+.hide{display:none!important}
+button{font-family:inherit;cursor:pointer;border:0}
+
+/* القائمة */
+#menu{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:calc(12px + var(--st)) calc(16px + var(--sr)) calc(12px + var(--sb)) calc(16px + var(--sl));
+  background:linear-gradient(180deg,rgba(30,14,4,.35),rgba(30,14,4,.78));overflow-y:auto;touch-action:pan-y}
+.mcard{display:flex;gap:22px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:860px;width:100%}
+.mleft{flex:1 1 280px;text-align:center}
+.mright{flex:1 1 300px;display:flex;flex-direction:column;gap:9px;max-width:380px}
+.logo{font-size:54px;line-height:1;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(20deg)}}
+h1{margin:4px 0 0;font-size:44px;font-weight:900;letter-spacing:0;line-height:1.15;
+  background:linear-gradient(180deg,#fff6d8,#ffc23d 60%,#ff8a2b);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 rgba(90,35,0,.65))}
+.sub{margin:2px 0 12px;opacity:.9;font-weight:700}
+label{display:block;font-weight:700;margin-bottom:4px;opacity:.9}
+input{font-family:inherit;font-size:18px;font-weight:700;width:100%;padding:10px 14px;border-radius:14px;border:2px solid var(--line);
+  background:rgba(0,0,0,.35);color:#fff;outline:none;text-align:center;-webkit-user-select:text;user-select:text}
+input:focus{border-color:var(--gold)}
+.mbtn{font-size:18px;font-weight:900;color:#fff;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.14);border:2px solid var(--line);
+  box-shadow:0 4px 0 rgba(0,0,0,.35);transition:transform .08s}
+.mbtn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.35)}
+.mbtn.gold{background:linear-gradient(180deg,#ffd35c,#ff9d1c);color:#3a1800;border-color:#ffe39a}
+.mbtn.blue{background:linear-gradient(180deg,#5aa2ff,#2f6fe0);border-color:#9cc6ff}
+.row{display:flex;gap:8px}
+.row input{flex:1}
+.row .mbtn{flex:0 0 auto;padding-inline:20px}
+#status{min-height:24px;text-align:center;font-weight:700;color:#ffe08a}
+.help{font-size:13px;opacity:.85;line-height:1.7;text-align:center;margin-top:6px}
+
+/* واجهة اللعب */
+#hud{position:fixed;inset:0;pointer-events:none}
+#hud > *{pointer-events:auto}
+#score{position:absolute;top:calc(8px + var(--st));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;
+  background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:3px 12px;font-weight:900;pointer-events:none;white-space:nowrap}
+#score .tn{font-size:13px;padding:1px 8px;border-radius:8px}
+#score .tb{background:var(--blue)} #score .tr{background:var(--red)}
+#score b{font-size:22px;min-width:18px;text-align:center}
+#tm{font-size:15px;opacity:.95;min-width:44px;text-align:center;direction:ltr}
+#bExit{position:absolute;top:calc(8px + var(--st));right:calc(10px + var(--sr));background:var(--glass);color:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:5px 12px;font-weight:700;font-size:14px}
+#roomBox{position:absolute;top:calc(8px + var(--st));left:calc(10px + var(--sl));display:flex;gap:6px;align-items:center}
+#roomInfo{background:var(--glass);border:1px solid var(--line);border-radius:12px;padding:5px 10px;font-weight:700;font-size:13px;pointer-events:none}
+#bShare{background:var(--gold);color:#3a1800;border-radius:12px;padding:5px 10px;font-weight:900;font-size:13px}
+#bars{position:absolute;top:calc(46px + var(--st));left:50%;transform:translateX(-50%);width:200px;pointer-events:none}
+.bar{height:8px;border-radius:6px;background:rgba(0,0,0,.45);overflow:hidden;margin-top:4px;border:1px solid rgba(255,255,255,.15)}
+.bar i{display:block;height:100%;width:100%;transform-origin:right;background:linear-gradient(90deg,#6dffb0,#22c06d)}
+#powBar i{background:linear-gradient(90deg,#ffe066,#ff5a1f)}
+#big{position:absolute;top:30%;left:0;right:0;text-align:center;font-size:52px;font-weight:900;pointer-events:none;
+  text-shadow:0 4px 0 rgba(0,0,0,.45),0 0 30px rgba(0,0,0,.35);opacity:0;transition:opacity .25s}
+#big small{display:block;font-size:20px;font-weight:700}
+#big.on{opacity:1;animation:pop .45s}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+#toast{position:absolute;top:calc(78px + var(--st));left:50%;transform:translateX(-50%);background:var(--glass);border:1px solid var(--line);
+  padding:5px 14px;border-radius:12px;font-weight:700;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+#toast.on{opacity:1}
+
+/* عصا التحكم */
+#joyzone{position:absolute;left:0;bottom:0;width:46%;height:72%;touch-action:none}
+#joyb{position:absolute;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;background:rgba(0,0,0,.22);border:3px solid rgba(255,255,255,.35);
+  left:calc(110px + var(--sl));top:calc(100% - 110px - var(--sb));pointer-events:none;transition:opacity .2s;opacity:.55}
+#joyb.act{opacity:1;transition:none}
+#joyk{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:rgba(255,255,255,.85);box-shadow:0 3px 8px rgba(0,0,0,.4)}
+
+/* الأزرار */
+.b{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:900;color:#fff;
+  background:rgba(15,10,5,.55);border:3px solid rgba(255,255,255,.55);box-shadow:0 4px 10px rgba(0,0,0,.35);touch-action:none;line-height:1.1;text-align:center}
+.b span{font-size:22px;line-height:1}
+.b.down{transform:scale(.9);background:rgba(255,255,255,.3)}
+#bShoot{width:96px;height:96px;right:calc(26px + var(--sr));bottom:calc(28px + var(--sb));font-size:17px;border-color:#ffd35c;background:rgba(255,140,20,.45)}
+#bPass{width:74px;height:74px;right:calc(136px + var(--sr));bottom:calc(22px + var(--sb));font-size:14px;border-color:#9cc6ff}
+#bSlide{width:74px;height:74px;right:calc(40px + var(--sr));bottom:calc(138px + var(--sb));font-size:14px;border-color:#ff8f8a}
+#bSprint{width:68px;height:68px;right:calc(128px + var(--sr));bottom:calc(112px + var(--sb));font-size:13px;border-color:#7dffb8}
+#bCall{width:66px;height:66px;right:calc(212px + var(--sr));bottom:calc(66px + var(--sb));font-size:14px;border-color:#fff}
+.cd{opacity:.45}
+
+#endbox{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(20,10,4,.6)}
+#endbox h2{margin:0;font-size:40px;font-weight:900}
+#endbox p{margin:0;font-size:20px;font-weight:700}
+#endbox .row{gap:10px}
+
+#rot{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#1b1108;font-size:22px;font-weight:900;text-align:center;padding:20px;z-index:20}
+#rot div{font-size:64px;animation:spin 1.6s ease-in-out infinite}
+@keyframes spin{50%{transform:rotate(90deg)}}
+@media (orientation:portrait){ body.playing #rot{display:flex} }
+@media (max-height:420px){ h1{font-size:34px} .logo{font-size:40px} .mbtn{padding:9px 12px;font-size:16px} .help{display:none} }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="menu">
+  <div class="mcard">
+    <div class="mleft">
+      <div class="logo">⚽</div>
+      <h1>كورة الصحراء</h1>
+      <p class="sub">ثري دي • أونلاين • خمسة ضد خمسة</p>
+      <label for="name">اسمك</label>
+      <input id="name" maxlength="14" autocomplete="off" placeholder="اكتب اسمك">
+      <div class="help">شوت: اضغط مطوّل عشان تقوّي الشوت • زحلقة بدون كورة: تطيّح الخصم وتاخذ منه الكورة • زحلقة مع الكورة: تسرّع وتكسر اللاعبين • اطلب الكورة: تنادي «شوتولي!»</div>
+    </div>
+    <div class="mright">
+      <button class="mbtn gold" id="bQuick">🌐 لعب سريع أونلاين</button>
+      <button class="mbtn blue" id="bHost">➕ سوّ غرفة لربعك</button>
+      <div class="row">
+        <input id="code" inputmode="numeric" maxlength="4" placeholder="رمز الغرفة" autocomplete="off">
+        <button class="mbtn" id="bJoin">دخول</button>
+      </div>
+      <button class="mbtn" id="bBots">🤖 العب ضد البوتات</button>
+      <div id="status"></div>
+    </div>
+  </div>
+</div>
+
+<div id="hud" class="hide">
+  <div id="score">
+    <span class="tn tb">الأزرق</span><b id="sB">0</b>
+    <span id="tm">3:00</span>
+    <b id="sR">0</b><span class="tn tr">الأحمر</span>
+  </div>
+  <button id="bExit">✕ خروج</button>
+  <div id="roomBox"><div id="roomInfo"></div><button id="bShare" class="hide">📤 شارك</button></div>
+  <div id="bars">
+    <div class="bar" id="stamBar"><i></i></div>
+    <div class="bar hide" id="powBar"><i></i></div>
+  </div>
+  <div id="big"></div>
+  <div id="toast"></div>
+
+  <div id="joyzone"><div id="joyb"><div id="joyk"></div></div></div>
+  <div class="b" id="bShoot"><span>⚽</span>شوت</div>
+  <div class="b" id="bPass"><span>➜</span>تمرير</div>
+  <div class="b" id="bSlide"><span>🦵</span>زحلقة</div>
+  <div class="b" id="bSprint"><span>⚡</span>سرعة</div>
+  <div class="b" id="bCall"><span>✋</span>اطلب</div>
+
+  <div id="endbox" class="hide">
+    <h2 id="endT"></h2>
+    <p id="endS"></p>
+    <div class="row">
+      <button class="mbtn gold" id="bAgain">مباراة جديدة</button>
+      <button class="mbtn" id="bMenu2">القائمة</button>
+    </div>
+  </div>
+</div>
+
+<div id="rot"><div>📱</div>لف جوالك بالعرض عشان تلعب</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
